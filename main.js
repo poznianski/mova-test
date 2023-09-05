@@ -4,7 +4,7 @@ const questions = {
       {
         question: "The class is .... Monday morning.",
         options: ["ON", "IN", "AT", "TO"],
-        answer: "ONsdfsd",
+        answer: "ON",
       },
 
       {
