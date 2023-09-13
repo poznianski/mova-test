@@ -1,8 +1,44 @@
 body {
-  /* color: whitesmoke;
-  background-color: #111; */
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: #353739;
+  background-color: rgb(119, 121, 101);
+  font-size: 16px;
+  font-weight: bold;
 }
 
 button {
   margin-top: 50px;
+}
+
+.container {
+  margin: 20px;
+}
+
+.button {
+  background-color: orange;
+  outline: none;
+  border: none;
+  color: white;
+  border-radius: 2px;
+  width: 100px;
+  padding: 4px;
+  cursor: pointer;
+  transition: 0.3s all ease;
+  font-size: 16px;
+
+  &:hover {
+    background-color: rgb(122, 125, 104);
+  }
+}
+
+.question-title {
+  margin-bottom: 10px;
+}
+
+.question-text {
+  margin-bottom: 4px;
 }

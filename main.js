@@ -51,7 +51,7 @@ const questions = [
     level: "A1",
     task: 2,
     title: "2. Choose the correct word",
-    question: "She .... Australian doctor.",
+    question: "She is .... Australian doctor.",
     options: ["a", "an"],
     answer: "an",
   },
@@ -1158,7 +1158,7 @@ const questions = [
     task: 2,
     title: "2. Match the words",
     question: "armoured",
-    options: ["battery", "company", "regiment ", "squadron", "troop"],
+    options: ["battery", "company", "regiment", "squadron", "troop"],
     answer: "regiment",
   },
   {
@@ -1166,7 +1166,7 @@ const questions = [
     task: 2,
     title: "2. Match the words",
     question: "artillery",
-    options: ["battery", "company", "regiment ", "squadron", "troop"],
+    options: ["battery", "company", "regiment", "squadron", "troop"],
     answer: "battery",
   },
   {
@@ -1174,7 +1174,7 @@ const questions = [
     task: 2,
     title: "2. Match the words",
     question: "aviation",
-    options: ["battery", "company", "regiment ", "squadron", "troop"],
+    options: ["battery", "company", "regiment", "squadron", "troop"],
     answer: "squadron",
   },
   {
@@ -1182,7 +1182,7 @@ const questions = [
     task: 2,
     title: "2. Match the words",
     question: "engineer",
-    options: ["battery", "company", "regiment ", "squadron", "troop"],
+    options: ["battery", "company", "regiment", "squadron", "troop"],
     answer: "troop",
   },
   {
@@ -1262,6 +1262,19 @@ const questions = [
   },
 ];
 
+const startButton = document.querySelector("#start-button");
+const quizContent = document.querySelector("#quiz-wrap");
+
+const startQuiz = () => {
+  startButton.style.display = "none";
+
+  quizContent.style.display = "block";
+
+  displayQuestion(currentQuestionIndex);
+};
+
+startButton.addEventListener("click", startQuiz);
+
 const levels = ["A1", "A2", "B1", "B2", "C1", "C2"];
 let currentLevel = 0;
 let correctAnswers = 0;
@@ -1277,7 +1290,10 @@ quizContainer.appendChild(resultParagraph);
 
 const displayQuestion = (index) => {
   const questionData = questions[index];
-  questionElement.innerHTML = `${questionData.title}: <br> ${questionData.question}`;
+  questionElement.innerHTML = `
+  <p class="question-title">${questionData.title}</p>
+  <p class="question-text">${questionData.question}</p>
+`;
   optionsElement.innerHTML = "";
 
   const form = document.createElement("form");
@@ -1319,26 +1335,45 @@ const handleAnswerClick = () => {
     resultParagraph.textContent = "Wrong!";
   }
 
+  const currentLevelQuestions = questions.filter(
+    (q) => q.level === levels[currentLevel]
+  );
+
   if (correctAnswers >= 2 && currentLevel < levels.length - 1) {
     currentLevel++;
     correctAnswers = 0;
-
-    const nextQuestion = questions.findIndex(
+    currentQuestionIndex = questions.findIndex(
       (q) => q.level === levels[currentLevel]
     );
-    if (nextQuestion >= 0) {
-      currentQuestionIndex = nextQuestion;
-    }
   } else {
-    currentQuestionIndex++;
+    const nextQuestionIndex =
+      currentLevelQuestions.findIndex(
+        (q) => q === questions[currentQuestionIndex]
+      ) + 1;
+
+    if (nextQuestionIndex < currentLevelQuestions.length) {
+      currentQuestionIndex = questions.findIndex(
+        (q) => q === currentLevelQuestions[nextQuestionIndex]
+      );
+    } else {
+      endTest();
+      return;
+    }
   }
 
-  if (currentQuestionIndex < questions.length) {
-    displayQuestion(currentQuestionIndex);
-  } else {
-    resultParagraph.textContent = "All questions completed!";
-    nextButton.disabled = true;
-  }
+  displayQuestion(currentQuestionIndex);
+};
+
+const endTest = () => {
+  resultParagraph.innerHTML = `
+  <span class="result-text">Дякуємо за проходження мовного тесту!</span><br>
+  <span class="result-text"> Ваш результат: ${levels[currentLevel]}. </span><br>
+  <span class="result-text"> Якщо ви хочете отримати результат на електронну пошту, заповніть поле нижче: </span><br>
+  <span class="result-text"> Ваша електронна адреса: <input type="text" id="email"> <br>
+  <button id="send-button" class="button">Надіслати</button>
+  `;
+
+  nextButton.disabled = true;
 };
 
 nextButton.addEventListener("click", () => {
@@ -1346,3 +1381,4 @@ nextButton.addEventListener("click", () => {
 });
 
 displayQuestion(currentQuestionIndex);
+// endTest();
