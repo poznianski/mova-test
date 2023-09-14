@@ -1291,8 +1291,8 @@ quizContainer.appendChild(resultParagraph);
 const displayQuestion = (index) => {
   const questionData = questions[index];
   questionElement.innerHTML = `
-  <p class="question-title">${questionData.title}</p>
-  <p class="question-text">${questionData.question}</p>
+  <p class="test_question-title">${questionData.title}</p>
+  <p class="test_question-text">${questionData.question}</p>
 `;
   optionsElement.innerHTML = "";
 

@@ -1,24 +1,19 @@
-body {
-  margin: 0;
+.test_container {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
 
   color: #353739;
   background-color: rgb(119, 121, 101);
-  font-size: 16px;
+  font-size: 20px;
   font-weight: bold;
 }
-
-button {
-  margin-top: 50px;
-}
-
-.container {
+.test_wrapper {
   margin: 20px;
 }
 
-.button {
+.test_button {
   background-color: orange;
   outline: none;
   border: none;
@@ -35,10 +30,12 @@ button {
   }
 }
 
-.question-title {
+.test_question-title {
   margin-bottom: 10px;
+  color: black;
+  font-size: 26px;
 }
 
-.question-text {
+.test_question-text {
   margin-bottom: 4px;
 }
