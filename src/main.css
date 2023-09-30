@@ -1,0 +1,149 @@
+@font-face {
+  font-family: "GT Eesti Pro Display Regular";
+  src: url("https://poznianski.github.io/mova-test/fonts/gteestiprodisplay_regular.otf")
+    format("otf");
+}
+
+.test_container {
+  display: flex;
+
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  color: #353739;
+  background-color: rgb(119, 121, 101);
+  font-size: 20px;
+  font-family: "GT Eesti Pro Display Regular", sans-serif;
+}
+
+.test_question-container {
+  width: 300px;
+}
+
+.test_wrapper {
+  display: flex;
+  justify-content: center;
+  margin: 16px;
+  width: 350px;
+}
+
+@media screen and (min-width: 600px) {
+  .test_wrapper {
+    width: 750px;
+    margin: 10px;
+  }
+
+  .test_question-container {
+    width: 560px;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .test_wrapper {
+    width: 100%;
+    margin: 5px;
+  }
+}
+
+.test_button {
+  background-color: rgb(242, 126, 59);
+  outline: none;
+  border: none;
+  color: white;
+  border-radius: 2px;
+  width: 280px;
+  padding: 10px;
+  cursor: pointer;
+  transition: 0.3s all ease;
+  font-size: 14px;
+  font-family: "GT Eesti Pro Display Regular", sans-serif;
+
+  &:hover {
+    background-color: rgb(122, 125, 104);
+  }
+
+  &:active {
+    background-color: rgb(255, 99, 1);
+  }
+}
+
+.test_input {
+  display: block;
+  width: 280px;
+  outline: none;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  border-bottom-width: 2px;
+  border-bottom-style: solid;
+  border-bottom-color: #353739;
+  padding: 10px;
+  background-color: transparent;
+  font-size: 14px;
+  color: rgba(53, 55, 57, 0.54);
+  font-family: "GT Eesti Pro Display Regular", sans-serif;
+
+  &::placeholder {
+    color: rgba(53, 55, 57, 0.54);
+  }
+}
+
+.test_question-title {
+  margin-bottom: 10px;
+  color: black;
+  font-size: 26px;
+  font-weight: bold;
+}
+
+.test_question-text {
+  font-size: 22px;
+  margin-bottom: 30px;
+}
+
+.test_radio-label {
+  display: flex;
+}
+
+.test_radio input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+}
+.test_radio input[type="radio"] + .test_radio-label:before {
+  content: "";
+  background: #f4f4f4;
+  border-radius: 100%;
+  border: 1px solid #b4b4b4;
+  display: inline-block;
+  width: 1.4em;
+  height: 1.4em;
+  position: relative;
+  top: -0.2em;
+  margin-right: 1em;
+  cursor: pointer;
+  transition: all 250ms ease;
+}
+.test_radio input[type="radio"]:checked + .test_radio-label:before {
+  background-color: rgb(242, 126, 59);
+  box-shadow: inset 0 0 0 4px #f4f4f4;
+}
+.test_radio input[type="radio"]:focus + .test_radio-label:before {
+  outline: none;
+  border-color: rgb(242, 126, 59);
+}
+.test_radio input[type="radio"]:disabled + .test_radio-label:before {
+  box-shadow: inset 0 0 0 4px #f4f4f4;
+  border-color: #b4b4b4;
+  background: #b4b4b4;
+}
+.test_radio input[type="radio"] + .test_radio-label:empty:before {
+  margin-right: 0;
+}
+
+.result-text {
+  font-size: 16px;
+}
+
+.test_mb-20 {
+  margin-bottom: 20px;
+}
