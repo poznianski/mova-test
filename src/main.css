@@ -21,11 +21,23 @@
   width: 300px;
 }
 
+.test_options-container {
+  display: flex;
+  justify-content: center;
+}
+
 .test_wrapper {
   display: flex;
   justify-content: center;
   margin: 16px;
   width: 350px;
+}
+
+.quiz-wrap {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 @media screen and (min-width: 600px) {
@@ -90,6 +102,8 @@
 }
 
 .test_question-title {
+  display: flex;
+  justify-content: center;
   margin-bottom: 10px;
   color: black;
   font-size: 26px;
@@ -97,6 +111,8 @@
 }
 
 .test_question-text {
+  display: flex;
+  justify-content: center;
   font-size: 22px;
   margin-bottom: 30px;
 }
@@ -146,4 +162,13 @@
 
 .test_mb-20 {
   margin-bottom: 20px;
+}
+
+.flex-center {
+  display: flex;
+  justify-content: center;
+}
+.test_results-container {
+  display: flex;
+  justify-content: center;
 }
