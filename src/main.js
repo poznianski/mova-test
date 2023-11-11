@@ -113,10 +113,10 @@ const handleAnswerClick = () => {
   const currentQuestion = questions[currentQuestionId];
 
   if (selectedAnswer === currentQuestion.answer) {
-    resultContainer.textContent = `Correct! Current level: ${currentLevel}`;
+    resultContainer.textContent = `Correct!`;
     correctAnswers++;
   } else {
-    resultContainer.textContent = `Wrong! Current level: ${currentLevel}`;
+    resultContainer.textContent = `Wrong!`;
   }
 
   const maxTasks = maxTaskNumber(levels[currentLevel]);
@@ -140,7 +140,11 @@ nextButton.addEventListener("click", () => {
 });
 
 const endTest = () => {
-  resultContainer.style.display = "block";
+  resultContainer.textContent = "";
+  resultContainer.style.display = "flex";
+  const options = document.querySelector("#options-container");
+  options.style.display = "none";
+  questionElement.style.display = "none";
 
   resultContainer.appendChild(
     createParagraph(
@@ -156,20 +160,21 @@ const endTest = () => {
   );
   resultContainer.appendChild(
     createParagraph(
-      "Якщо ви хочете отримати результат на електронну пошту, заповніть поле нижче.",
+      "Якщо ви хочете отримати результат на електронну пошту, заповніть поля нижче.",
       "result-text",
     ),
   );
+
   resultContainer.appendChild(
-    createParagraph("Ваша електронна адреса:", "result-text"),
+    createInput("text", "email", "test_input test_mb-20", "E-mail"),
   );
 
   resultContainer.appendChild(
     createInput(
       "text",
-      "email",
+      "fullName",
       "test_input test_mb-20",
-      "Введіть вашу email адресу",
+      "Ім'я та прізвище",
     ),
   );
 
@@ -178,8 +183,12 @@ const endTest = () => {
 
   sendButton.addEventListener("click", async () => {
     const emailInput = document.querySelector("#email");
+    const fullNameInput = document.querySelector("#fullName");
     const email = emailInput ? emailInput.value : "";
+    const fullName = fullNameInput ? fullNameInput.value : "";
     const level = levels[currentLevel];
+
+    options.style.display = "none";
 
     try {
       const response = await fetch("https://mova-backend.vercel.app/send-pdf", {
@@ -187,7 +196,7 @@ const endTest = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email, level }),
+        body: JSON.stringify({ email, level, fullName }),
       });
 
       resultContainer.innerHTML = "Loading...";
