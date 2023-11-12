@@ -28,6 +28,7 @@ const optionsElement = document.querySelector("#options-container");
 const nextButton = document.querySelector("#next-button");
 const resultContainer = document.querySelector("#results-container");
 const quizContainer = document.querySelector("#quiz-container");
+const answerResult = document.querySelector("#answer-result");
 
 const displayQuestion = () => {
   questionElement.innerHTML = "";
@@ -113,11 +114,17 @@ const handleAnswerClick = () => {
   const currentQuestion = questions[currentQuestionId];
 
   if (selectedAnswer === currentQuestion.answer) {
-    resultContainer.textContent = `Correct!`;
+    answerResult.textContent = "Correct!";
+    answerResult.className = "result-message correct";
     correctAnswers++;
   } else {
-    resultContainer.textContent = `Wrong!`;
+    answerResult.textContent = "Wrong!";
+    answerResult.className = "result-message wrong";
   }
+
+  setTimeout(() => {
+    answerResult.classList.add("hidden-message");
+  }, 2000);
 
   const maxTasks = maxTaskNumber(levels[currentLevel]);
 
@@ -138,6 +145,14 @@ const handleAnswerClick = () => {
 nextButton.addEventListener("click", () => {
   handleAnswerClick();
 });
+
+function appendToContainer(container, elementType, content, className) {
+  const element =
+    elementType === "input"
+      ? createInput("text", content, className, content)
+      : createParagraph(content, className);
+  container.appendChild(element);
+}
 
 const endTest = () => {
   resultContainer.textContent = "";
@@ -161,7 +176,7 @@ const endTest = () => {
   resultContainer.appendChild(
     createParagraph(
       "Якщо ви хочете отримати результат на електронну пошту, заповніть поля нижче.",
-      "result-text",
+      "result-text test_mb-20",
     ),
   );
 
@@ -188,6 +203,18 @@ const endTest = () => {
     const fullName = fullNameInput ? fullNameInput.value : "";
     const level = levels[currentLevel];
 
+    if (!email || !fullName) {
+      const errorMessage = createParagraph(
+        "Inputs cannot be empty",
+        "error-text",
+      );
+      resultContainer.appendChild(errorMessage);
+      setTimeout(() => {
+        errorMessage.remove();
+      }, 2000);
+      return;
+    }
+
     options.style.display = "none";
 
     try {
@@ -200,9 +227,7 @@ const endTest = () => {
       });
 
       resultContainer.innerHTML = "Loading...";
-
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-
+      await new Promise((resolve) => setTimeout(resolve, 1500));
       resultContainer.innerHTML = "";
 
       if (response.ok) {
@@ -223,7 +248,7 @@ const endTest = () => {
     } catch (error) {
       resultContainer.appendChild(
         createParagraph(
-          "Щось пішло не так. Будь-ласка, зверніться до адміністратора",
+          "Помилка на стороні клієнта. Будь-ласка, зверніться до адміністратора",
           "result-text",
         ),
       );

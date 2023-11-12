@@ -15,12 +15,21 @@
         <div id="quiz-wrap" style="display: none" class="quiz-wrap">
           <div id="quiz-container" class="test_quiz-container">
             <div id="question-container" class="test_question-container"></div>
-            <div id="options-container" class="test_options-container"></div>
-            <div id="results-container" class="test_results-container"></div>
+            <div
+              id="options-container"
+              class="test_options-container test_box-shadow"
+            ></div>
+            <div
+              id="results-container"
+              class="test_results-container test_box-shadow"
+            ></div>
           </div>
 
           <div class="flex-center">
-            <button id="next-button" class="test_button">Next</button>
+            <div class="flex-col">
+              <button id="next-button" class="test_button">Next</button>
+              <p id="answer-result" class="answer-result"></p>
+            </div>
           </div>
         </div>
       </div>

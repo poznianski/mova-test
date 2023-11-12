@@ -1038,7 +1038,7 @@ export const questions = [
     task: 2,
     title: "2. Circle the correct form of the verbs.",
     question:
-      "The parts only arrived on Monday because a maintenance group techucian .... an order for the wrong parts.",
+      "The parts only arrived on Monday because a maintenance group technician .... an order for the wrong parts.",
     options: ["sent", "had sent "],
     answer: "had sent ",
   },
