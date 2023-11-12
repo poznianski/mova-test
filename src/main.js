@@ -156,7 +156,7 @@ function appendToContainer(container, elementType, content, className) {
 
 const endTest = () => {
   resultContainer.textContent = "";
-  resultContainer.style.display = "flex";
+  resultContainer.style.opacity = "1";
   const options = document.querySelector("#options-container");
   options.style.display = "none";
   questionElement.style.display = "none";
