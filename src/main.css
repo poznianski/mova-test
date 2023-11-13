@@ -13,7 +13,7 @@
   justify-content: center;
 
   color: #353739;
-  background-color: rgb(119, 121, 101);
+  background-color: #b7bdb0;
   font-size: 20px;
   font-family: "GT Eesti Pro Display Regular", sans-serif;
 }
@@ -207,9 +207,17 @@
   display: flex;
   justify-content: center;
 }
+.test_form-options {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
 .test_results-container {
   display: flex;
   flex-direction: column;
+  gap: 15px;
+  justify-content: center;
+  align-items: center;
   opacity: 0;
   transition: opacity 0.5s ease;
 
@@ -221,12 +229,24 @@
   flex-direction: column;
 }
 
-.answer-result {
+.result-message {
   display: block;
-  height: 20px;
+  height: 30px;
+  text-align: center;
 }
 
 .hidden-message {
   opacity: 0;
+  height: 30px;
   transition: opacity 0.5s ease;
+}
+
+.correct-answer {
+  color: green;
+  font-weight: bold;
+}
+
+.wrong-answer {
+  color: red;
+  font-weight: bold;
 }

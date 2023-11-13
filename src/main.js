@@ -16,6 +16,8 @@ let currentQuestionId;
 const startQuiz = () => {
   startButton.style.display = "none";
   quizContent.style.display = "block";
+  nextButton.style.display = "block";
+  resultContainer.style.opacity = "0";
 
   displayQuestion();
 };
@@ -29,14 +31,20 @@ const nextButton = document.querySelector("#next-button");
 const resultContainer = document.querySelector("#results-container");
 const quizContainer = document.querySelector("#quiz-container");
 const answerResult = document.querySelector("#answer-result");
+answerResult.className = "result-message";
 
 const displayQuestion = () => {
   questionElement.innerHTML = "";
   optionsElement.innerHTML = "";
+  answerResult.textContent = "";
+  nextButton.textContent = "Check";
+  isAnswerChecked = false;
 
   const currentLevelQuestions = questions.filter(
     (q) => q.level === levels[currentLevel] && q.task === currentTask,
   );
+
+  console.log("Filtered Questions:", currentLevelQuestions);
 
   if (currentLevelQuestions.length === 0) {
     console.log("No more questions for this level and task");
@@ -64,6 +72,7 @@ const displayQuestion = () => {
 
   const form = document.createElement("form");
   form.id = "option-form";
+  form.className = "test_form-options";
 
   questionData.options.forEach((option, i) => {
     const radioDiv = document.createElement("div");
@@ -100,11 +109,28 @@ const maxTaskNumber = (level) => {
   return Math.max(...tasksForLevel.map((q) => q.task));
 };
 
+let isAnswerChecked = false;
+
+const handleButtonClick = () => {
+  if (isAnswerChecked) {
+    isAnswerChecked = false;
+    nextButton.textContent = "Check";
+    displayQuestion();
+  } else {
+    handleAnswerClick();
+    isAnswerChecked = true;
+    nextButton.textContent = "Next";
+  }
+};
+
 const handleAnswerClick = () => {
   const formData = new FormData(document.getElementById("option-form"));
   const selectedAnswer = formData.get("option");
 
   resultContainer.textContent = "";
+
+  const selectedOption = document.querySelector(`input[name="option"]:checked`);
+  const selectedLabel = selectedOption ? selectedOption.nextSibling : null;
 
   if (currentQuestionId == null) {
     console.error("No current question set");
@@ -114,10 +140,16 @@ const handleAnswerClick = () => {
   const currentQuestion = questions[currentQuestionId];
 
   if (selectedAnswer === currentQuestion.answer) {
+    if (selectedLabel) {
+      selectedLabel.classList.add("correct-answer");
+    }
     answerResult.textContent = "Correct!";
     answerResult.className = "result-message correct";
     correctAnswers++;
   } else {
+    if (selectedLabel) {
+      selectedLabel.classList.add("wrong-answer");
+    }
     answerResult.textContent = "Wrong!";
     answerResult.className = "result-message wrong";
   }
@@ -134,25 +166,32 @@ const handleAnswerClick = () => {
     currentTask = 1;
   } else if (currentTask > maxTasks) {
     endTest();
-    return;
   } else {
     currentTask++;
   }
-
-  displayQuestion();
 };
 
 nextButton.addEventListener("click", () => {
-  handleAnswerClick();
+  handleButtonClick();
 });
 
-function appendToContainer(container, elementType, content, className) {
-  const element =
-    elementType === "input"
-      ? createInput("text", content, className, content)
-      : createParagraph(content, className);
-  container.appendChild(element);
-}
+const resetAndStartQuiz = () => {
+  currentLevel = 0;
+  correctAnswers = 0;
+  currentTask = 1;
+  currentQuestionId = null;
+  resultContainer.innerHTML = "";
+  quizContent.style.display = "block";
+
+  nextButton.textContent = "Check";
+  answerResult.textContent = "";
+  answerResult.className = "";
+
+  questionElement.style.display = "block";
+  optionsElement.style.display = "flex";
+
+  startQuiz();
+};
 
 const endTest = () => {
   resultContainer.textContent = "";
@@ -203,6 +242,19 @@ const endTest = () => {
     const fullName = fullNameInput ? fullNameInput.value : "";
     const level = levels[currentLevel];
 
+    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+    if (!emailRegex.test(email)) {
+      const errorMessage = createParagraph(
+        "Please enter a valid email address",
+        "error-text",
+      );
+      resultContainer.appendChild(errorMessage);
+      setTimeout(() => {
+        errorMessage.remove();
+      }, 2000);
+      return;
+    }
+
     if (!email || !fullName) {
       const errorMessage = createParagraph(
         "Inputs cannot be empty",
@@ -215,6 +267,8 @@ const endTest = () => {
       return;
     }
 
+    resultContainer.innerHTML = "<p>Loading...</p>";
+
     options.style.display = "none";
 
     try {
@@ -226,8 +280,6 @@ const endTest = () => {
         body: JSON.stringify({ email, level, fullName }),
       });
 
-      resultContainer.innerHTML = "Loading...";
-      await new Promise((resolve) => setTimeout(resolve, 1500));
       resultContainer.innerHTML = "";
 
       if (response.ok) {
@@ -236,6 +288,27 @@ const endTest = () => {
             "Успішно відправлено, перевірте свою скриньку",
             "result-text",
           ),
+        );
+
+        const retakeTestButton = createButton(
+          "test_button",
+          "test_button",
+          "Пройти тест знову",
+        );
+        const goToCoursesButton = createButton(
+          "test_button",
+          "test_button",
+          "Перейти до вибору курсів",
+        );
+
+        resultContainer.appendChild(retakeTestButton);
+        resultContainer.appendChild(goToCoursesButton);
+
+        retakeTestButton.addEventListener("click", resetAndStartQuiz);
+        goToCoursesButton.addEventListener(
+          "click",
+          () =>
+            (window.location.href = "https://movaproject.com.ua/#courses_v"),
         );
       } else {
         resultContainer.appendChild(
