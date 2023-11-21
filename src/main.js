@@ -19,6 +19,8 @@ const startQuiz = () => {
   nextButton.style.display = "block";
   resultContainer.style.opacity = "0";
 
+  optionsElement.focus();
+
   displayQuestion();
 };
 
